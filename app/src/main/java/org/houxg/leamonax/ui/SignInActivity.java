@@ -70,6 +70,18 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.tv_example)
     TextView mExampleTv;
 
+    /**
+     * @param data
+     * @return account local id or -1
+     */
+    public static long getAccountIdFromData(Intent data) {
+        if (data == null) {
+            return -1;
+        } else {
+            return data.getLongExtra(EXTRA_ACCOUNT_LOCAL_ID, -1);
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,8 +223,8 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
                             ToastUtils.show(SignInActivity.this, R.string.illegal_host);
                         } else {
                             ToastUtils.showNetworkError(SignInActivity.this);
-                            animateFinish(mSignInBtn, mSignInProgress);
                         }
+                        animateFinish(mSignInBtn, mSignInProgress);
                     }
 
                     @Override
@@ -299,19 +311,6 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
         }
     }
 
-    /**
-     *
-     * @param data
-     * @return account local id or -1
-     */
-    public static long getAccountIdFromData(Intent data) {
-        if (data == null) {
-            return -1;
-        } else {
-            return data.getLongExtra(EXTRA_ACCOUNT_LOCAL_ID, -1);
-        }
-    }
-
     private Observable<String> initHost() {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
@@ -328,9 +327,6 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
                 }
             }
         });
-    }
-
-    private static class IllegalHostException extends Exception {
     }
 
     private void animateProgress(View button, final View progressBar) {
@@ -384,5 +380,8 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
         String email = mEmailEt.getText().toString();
         String password = mPasswordEt.getText().toString();
         mSignInBtn.setEnabled(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password));
+    }
+
+    private static class IllegalHostException extends Exception {
     }
 }
