@@ -1,5 +1,6 @@
 package org.houxg.leamonax.ui;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,12 +30,32 @@ public class LaunchActivity extends Activity {
             intent = new Intent(this, SignInActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(intent);
-                finish();
-            }
-        }, 3000);
+        findViewById(R.id.iv_logo)
+                .animate()
+                .scaleX(1.5f)
+                .scaleY(1.5f)
+                .setDuration(3000)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                }).start();
     }
 }
