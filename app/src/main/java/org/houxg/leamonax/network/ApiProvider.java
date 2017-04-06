@@ -11,6 +11,7 @@ import org.houxg.leamonax.network.api.NotebookApi;
 import org.houxg.leamonax.network.api.UserApi;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -50,7 +51,7 @@ public class ApiProvider {
                         HttpUrl newUrl = url;
                         if (shouldAddTokenToQuery(path)) {
                             newUrl = url.newBuilder()
-                                    .addQueryParameter("token", Account.getCurrent().getAccessToken())
+                                    .addQueryParameter("token", Account.getCurrent() != null ? Account.getCurrent().getAccessToken() : "")
                                     .build();
                         }
                         Request newRequest = request.newBuilder()
@@ -70,6 +71,7 @@ public class ApiProvider {
             builder.addNetworkInterceptor(interceptor);
             builder.addNetworkInterceptor(new StethoInterceptor());
         }
+        builder.connectTimeout(3, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS).writeTimeout(5, TimeUnit.SECONDS);
         OkHttpClient client = builder.build();
         mApiRetrofit = new Retrofit.Builder()
                 .baseUrl(host + "/api/")
