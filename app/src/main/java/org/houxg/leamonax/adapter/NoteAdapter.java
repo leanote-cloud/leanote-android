@@ -25,6 +25,7 @@ import org.houxg.leamonax.model.NoteFile;
 import org.houxg.leamonax.model.Notebook;
 import org.houxg.leamonax.service.NoteFileService;
 import org.houxg.leamonax.utils.FileUtils;
+import org.houxg.leamonax.utils.HtmlUtils;
 import org.houxg.leamonax.utils.TimeUtils;
 import org.houxg.leamonax.widget.NoteList;
 
@@ -237,9 +238,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
 
     private CharSequence getHighlightedText(String text) {
         if (mTitleHighlight == null) {
-            return text;
+            return HtmlUtils.delHTMLTag(text);
         }
-        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        SpannableStringBuilder builder = new SpannableStringBuilder(HtmlUtils.delHTMLTag(text));
         Matcher matcher = mTitleHighlight.matcher(text);
         int color = 0xFFFDD835;
         while (matcher.find()) {

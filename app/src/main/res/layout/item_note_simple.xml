@@ -23,6 +23,8 @@
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/primary_text_light"
             android:textSize="20sp"
+            android:ellipsize="end"
+            android:maxLines="2"
             tools:text="Leanote API" />
 
     </LinearLayout>
