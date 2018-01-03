@@ -66,8 +66,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
     }
 
     public static NoteFragment newInstance() {
-        NoteFragment fragment = new NoteFragment();
-        return fragment;
+        return new NoteFragment();
     }
 
     @Override

@@ -1,9 +1,10 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-  android:minWidth="146dip"
-  android:minHeight="146dip"
+  android:minResizeWidth="180dp"
+  android:minWidth="250dp"
+  android:minResizeHeight="250dp"
+  android:minHeight="320dp"
   android:updatePeriodMillis="43200000"
   android:initialLayout="@layout/note_app_widget"
   android:autoAdvanceViewId="@+id/words"
   android:previewImage="@drawable/ic_launcher"
-  android:resizeMode="vertical"
 />

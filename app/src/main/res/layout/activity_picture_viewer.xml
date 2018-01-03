@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="org.houxg.leamonax.ui.AboutActivity">
+    tools:context="org.houxg.leamonax.ui.PictureViewerActivity">
 
     <com.github.piasy.biv.view.BigImageView
         android:id="@+id/big_image"
