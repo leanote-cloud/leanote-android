@@ -5,15 +5,17 @@
 **It's still in developing.** Be careful when you using it and make sure you have an backup.
 
 # 中文README
-![README_ZH](README-zh.md)
+[README_ZH](README-zh.md)
 
 # Screenshot
-![MainActivity](screenshot/MainActivity.png)
-![Navigation](screenshot/Navigation.png)
-![RichText](screenshot/RichText.png)
-![Markdown](screenshot/Markdown.png)
-![Search](screenshot/Search.png)
-![AppWidget](screenshot/AppWidget.png)
+<img src="screenshot/MainActivity.png" alt="MainActivity" width="250" height="446">
+&ensp; &ensp;<img src="screenshot/Navigation.png" alt="Navigation" width="250" height="446">
+&ensp; &ensp;<img src="screenshot/RichText.png" alt="RichText" width="250" height="446"> <br>
+
+<img src="screenshot/Markdown.png" alt="Markdown" width="250" height="446">
+&ensp; &ensp;<img src="screenshot/Search.png" alt="Search" width="250" height="446">
+&ensp; &ensp;<img src="screenshot/AppWidget.png" alt="AppWidget" width="250" height="446"> <br>
+
 
 # Download
 - [Git Release](https://github.com/leanote/leanote-android/releases/latest)
