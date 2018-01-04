@@ -31,3 +31,4 @@
 - [xingstarx](https://github.com/xingstarx)
 - [nicacol](https://github.com/nicacol)
 - [Ericwyn](https://github.com/Ericwyn)
+- [binsheng](https://github.com/binsheng)
