@@ -4,11 +4,16 @@
 
 **It's still in developing.** Be careful when you using it and make sure you have an backup.
 
+# 中文README
+![README_ZH](README-zh.md)
+
 # Screenshot
-![MainActivity](https://raw.githubusercontent.com/houxg/Leamonax/develop/screenshot/MainActivity.png)
-![Navigation](https://raw.githubusercontent.com/houxg/Leamonax/develop/screenshot/Navigation.png)
-![RichText](https://raw.githubusercontent.com/houxg/Leamonax/develop/screenshot/RichText.png)
-![Markdown](https://raw.githubusercontent.com/houxg/Leamonax/develop/screenshot/Markdown.png)
+![MainActivity](screenshot/MainActivity.png)
+![Navigation](screenshot/Navigation.png)
+![RichText](screenshot/RichText.png)
+![Markdown](screenshot/Markdown.png)
+![Search](screenshot/Search.png)
+![AppWidget](screenshot/AppWidget.png)
 
 # Download
 - [Git Release](https://github.com/leanote/leanote-android/releases/latest)
@@ -21,6 +26,7 @@
 - [x] Markdown support
 - [x] Custom host
 - [x] Search by note's title
+- [x] appWidget
 
 # TODO
 - [ ] Searching for full-text fields

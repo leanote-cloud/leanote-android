@@ -4,7 +4,7 @@
 
 **还在开发阶段.** 使用前请先备份，避免重要数据丢失.
 
-# Screenshot
+# 预览图
 ![首页](screenshot/MainActivity.png)
 ![导航页](screenshot/Navigation.png)
 ![富文本编辑器](screenshot/RichText.png)
@@ -12,7 +12,7 @@
 ![搜索](screenshot/Search.png)
 ![AppWidget](screenshot/AppWidget.png)
 
-# Download
+# 下载地址
 - [Git Release](https://github.com/leanote/leanote-android/releases/latest)
 - [Pgyer](https://www.pgyer.com/Leanote)
 
@@ -28,7 +28,7 @@
 # TODO
 - [ ] 全文搜索
 
-# Contributors
+# 贡献者
 
 - [houxg](https://github.com/houxg)
 - [xingstarx](https://github.com/xingstarx)
