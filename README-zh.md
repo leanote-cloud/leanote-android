@@ -5,13 +5,9 @@
 **还在开发阶段.** 使用前请先备份，避免重要数据丢失.
 
 # 预览图
-<img src="screenshot/MainActivity.png" alt="首页" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/Navigation.png" alt="导航页" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/RichText.png" alt="富文本编辑器" width="250" height="446"> <br>
+<img src="screenshot/MainActivity.png" alt="首页" width="250" height="446">&ensp; &ensp;<img src="screenshot/Navigation.png" alt="导航页" width="250" height="446">&ensp; &ensp;<img src="screenshot/RichText.png" alt="富文本编辑器" width="250" height="446"> <br>
 
-<img src="screenshot/Markdown.png" alt="Markdown编辑器" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/Search.png" alt="搜索" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/AppWidget.png" alt="AppWidget" width="250" height="446"> <br>
+<img src="screenshot/Markdown.png" alt="Markdown编辑器" width="250" height="446">&ensp; &ensp;<img src="screenshot/Search.png" alt="搜索" width="250" height="446">&ensp; &ensp;<img src="screenshot/AppWidget.png" alt="AppWidget" width="250" height="446"> <br>
 
 # 下载地址
 - [Git Release](https://github.com/leanote/leanote-android/releases/latest)

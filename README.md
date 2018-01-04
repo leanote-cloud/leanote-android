@@ -8,13 +8,9 @@
 [README_ZH](README-zh.md)
 
 # Screenshot
-<img src="screenshot/MainActivity.png" alt="MainActivity" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/Navigation.png" alt="Navigation" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/RichText.png" alt="RichText" width="250" height="446"> <br>
+<img src="screenshot/MainActivity.png" alt="MainActivity" width="250" height="446">&ensp; &ensp;<img src="screenshot/Navigation.png" alt="Navigation" width="250" height="446">&ensp; &ensp;<img src="screenshot/RichText.png" alt="RichText" width="250" height="446"> <br>
 
-<img src="screenshot/Markdown.png" alt="Markdown" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/Search.png" alt="Search" width="250" height="446">
-&ensp; &ensp;<img src="screenshot/AppWidget.png" alt="AppWidget" width="250" height="446"> <br>
+<img src="screenshot/Markdown.png" alt="Markdown" width="250" height="446">&ensp; &ensp;<img src="screenshot/Search.png" alt="Search" width="250" height="446">&ensp; &ensp;<img src="screenshot/AppWidget.png" alt="AppWidget" width="250" height="446"> <br>
 
 
 # Download
