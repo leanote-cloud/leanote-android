@@ -237,11 +237,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
     }
 
     private CharSequence getHighlightedText(String text) {
+        String newText = HtmlUtils.delHTMLTag(text);
         if (mTitleHighlight == null) {
-            return HtmlUtils.delHTMLTag(text);
+            return newText;
         }
-        SpannableStringBuilder builder = new SpannableStringBuilder(HtmlUtils.delHTMLTag(text));
-        Matcher matcher = mTitleHighlight.matcher(text);
+        SpannableStringBuilder builder = new SpannableStringBuilder(newText);
+        Matcher matcher = mTitleHighlight.matcher(newText);
         int color = 0xFFFDD835;
         while (matcher.find()) {
             builder.setSpan(new BackgroundColorSpan(color), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
