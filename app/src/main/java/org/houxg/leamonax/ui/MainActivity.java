@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -200,7 +201,11 @@ public class MainActivity extends BaseActivity implements Navigation.Callback {
         if (event.isSucceed()) {
             mNavigation.refresh();
         } else {
-            ToastUtils.show(this, R.string.sync_notes_failed);
+            if (!TextUtils.isEmpty(event.getMsg())) {
+                ToastUtils.show(this, event.getMsg());
+            } else {
+                ToastUtils.show(this, R.string.sync_notes_failed);
+            }
         }
     }
 

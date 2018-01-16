@@ -119,4 +119,5 @@
     <string name="permission_get_description">我们需要一些权限来启动应用，请给予我们这些应用。请放心，我们保证只会申请必要的权限，并保证绝不泄露用户隐私信息</string>
     <string name="permission_get">权限申请</string>
     <string name="allow">允许</string>
+    <string name="lea_api_error_need_upgrade_account">需要升级蚂蚁笔记账户</string>
 </resources>

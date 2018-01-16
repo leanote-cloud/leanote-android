@@ -9,7 +9,9 @@ import android.support.annotation.Nullable;
 import com.elvishew.xlog.XLog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.houxg.leamonax.R;
 import org.houxg.leamonax.model.SyncEvent;
+import org.houxg.leamonax.network.LeaFailure;
 import org.houxg.leamonax.service.AccountService;
 import org.houxg.leamonax.service.NoteService;
 
@@ -24,6 +26,7 @@ import rx.schedulers.Schedulers;
 public class NoteSyncService extends Service {
 
     private static final String TAG = "NoteSyncService:";
+    public static final String LEA_API_ERROR_NEED_UPGRADE_ACCOUNT = "NEED-UPGRADE-ACCOUNT";
 
     public static void startServiceForNote(Context context) {
         if (!AccountService.isSignedIn()) {
@@ -76,7 +79,16 @@ public class NoteSyncService extends Service {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        EventBus.getDefault().post(new SyncEvent(false));
+                        if (e instanceof LeaFailure) {
+                            LeaFailure leaFailure = (LeaFailure) e;
+                            if (LEA_API_ERROR_NEED_UPGRADE_ACCOUNT.equals(leaFailure.getMessage())) {
+                                EventBus.getDefault().post(new SyncEvent(false, getString(R.string.lea_api_error_need_upgrade_account)));
+                            } else {
+                                EventBus.getDefault().post(new SyncEvent(false));
+                            }
+                        } else {
+                            EventBus.getDefault().post(new SyncEvent(false));
+                        }
                         stopSelf();
                     }
 

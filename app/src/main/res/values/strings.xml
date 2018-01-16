@@ -121,4 +121,5 @@
     <string name="permission_get_description">We need some permission to start the application</string>
     <string name="permission_get">Permission request</string>
     <string name="allow">allow</string>
+    <string name="lea_api_error_need_upgrade_account">need upgrade Leanote account</string>
 </resources>
