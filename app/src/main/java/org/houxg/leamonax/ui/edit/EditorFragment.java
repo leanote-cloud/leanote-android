@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,14 +22,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.elvishew.xlog.XLog;
-import com.yuyh.library.imgsel.ImgSelActivity;
-import com.yuyh.library.imgsel.ImgSelConfig;
+import com.yuyh.library.imgsel.ISNav;
+import com.yuyh.library.imgsel.config.ISListConfig;
+import com.yuyh.library.imgsel.ui.ISListActivity;
 
 import org.houxg.leamonax.R;
 import org.houxg.leamonax.editor.Editor;
@@ -196,21 +196,22 @@ public class EditorFragment extends Fragment implements Editor.EditorListener {
     }
 
     private void openImageSelector(boolean supportSelfie) {
-        ImgSelConfig config = new ImgSelConfig.Builder(
-                getActivity(),
-                new com.yuyh.library.imgsel.ImageLoader() {
-                    @Override
-                    public void displayImage(Context context, String path, ImageView imageView) {
-                        Glide.with(context).load(path).into(imageView);
-                    }
-                })
+        ISListConfig config = new ISListConfig.Builder()
                 .multiSelect(false)
+                .rememberSelected(false)
+                .btnBgColor(Color.GRAY)
+                .btnTextColor(Color.BLUE)
+                .statusBarColor(Color.parseColor("#3F51B5"))
                 .backResId(R.drawable.ic_arrow_back_white)
-                .needCrop(true)
+//                .title("选择图片")
+                .titleColor(Color.WHITE)
+                .titleBgColor(Color.parseColor("#3F51B5"))
                 .cropSize(1, 1, 200, 200)
+                .needCrop(true)
                 .needCamera(supportSelfie)
+                .maxNum(9)
                 .build();
-        ImgSelActivity.startActivity(this, config, REQ_SELECT_IMAGE);
+        ISNav.getInstance().toListActivity(this, config, REQ_SELECT_IMAGE);
     }
 
     @OnClick(R.id.btn_link)
@@ -313,7 +314,7 @@ public class EditorFragment extends Fragment implements Editor.EditorListener {
                 && resultCode == Activity.RESULT_OK
                 && data != null
                 && mListener != null) {
-            List<String> pathList = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
+            List<String> pathList = data.getStringArrayListExtra(ISListActivity.INTENT_RESULT);
             if (CollectionUtils.isNotEmpty(pathList)) {
                 String path = pathList.get(0);
                 XLog.i(TAG + "path=" + path);
