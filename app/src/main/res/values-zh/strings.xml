@@ -120,4 +120,5 @@
     <string name="permission_get">权限申请</string>
     <string name="allow">允许</string>
     <string name="lea_api_error_need_upgrade_account">需要升级蚂蚁笔记账户</string>
+    <string name="webview_select_picture">选择图片</string>
 </resources>

@@ -203,11 +203,10 @@ public class EditorFragment extends Fragment implements Editor.EditorListener {
                 .btnTextColor(Color.BLUE)
                 .statusBarColor(Color.parseColor("#3F51B5"))
                 .backResId(R.drawable.ic_arrow_back_white)
-//                .title("选择图片")
+                .title(getString(R.string.webview_select_picture))
                 .titleColor(Color.WHITE)
                 .titleBgColor(Color.parseColor("#3F51B5"))
-                .cropSize(1, 1, 200, 200)
-                .needCrop(true)
+                .needScaleCrop(true)
                 .needCamera(supportSelfie)
                 .maxNum(9)
                 .build();

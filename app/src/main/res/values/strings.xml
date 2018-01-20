@@ -122,4 +122,5 @@
     <string name="permission_get">Permission request</string>
     <string name="allow">allow</string>
     <string name="lea_api_error_need_upgrade_account">need upgrade Leanote account</string>
+    <string name="webview_select_picture">Select Picture</string>
 </resources>
