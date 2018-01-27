@@ -26,6 +26,7 @@ import org.houxg.leamonax.model.Notebook;
 import org.houxg.leamonax.service.NoteFileService;
 import org.houxg.leamonax.utils.FileUtils;
 import org.houxg.leamonax.utils.HtmlUtils;
+import org.houxg.leamonax.utils.StringUtils;
 import org.houxg.leamonax.utils.TimeUtils;
 import org.houxg.leamonax.widget.NoteList;
 
@@ -66,7 +67,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         if (TextUtils.isEmpty(titleKeyWord)) {
             mTitleHighlight = null;
         } else {
-            mTitleHighlight = Pattern.compile(titleKeyWord, Pattern.CASE_INSENSITIVE);
+            mTitleHighlight = Pattern.compile(StringUtils.escapeRegex(titleKeyWord), Pattern.CASE_INSENSITIVE);
         }
     }
 
