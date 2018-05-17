@@ -1,11 +1,13 @@
 package org.houxg.leamonax.ui.edit;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -116,59 +118,77 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
         super.onDestroy();
     }
 
+    private void saveNoteInternal() {
+        filterUnchanged()
+                .doOnNext(new Action1<Wrapper>() {
+                    @Override
+                    public void call(Wrapper wrapper) {
+                        saveAsDraft(wrapper);
+                        setResult(RESULT_OK);
+                        NetworkUtils.checkNetwork();
+                    }
+                })
+                .flatMap(new Func1<Wrapper, Observable<Long>>() {
+                    @Override
+                    public Observable<Long> call(Wrapper wrapper) {
+                        return uploadToServer(wrapper.note.getId());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        DialogDisplayer.showProgress(NoteEditActivity.this, R.string.saving_note);
+                    }
+                })
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onCompleted() {
+                        DialogDisplayer.dismissProgress();
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        DialogDisplayer.dismissProgress();
+                        ToastUtils.show(Leamonax.getContext(), e.getMessage());
+                        if (e instanceof NetworkUtils.NetworkUnavailableException) {
+                            finish();
+                        } else if (e instanceof ReadableException) {
+                            setResult(RESULT_CONFLICT);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(Long noteLocalId) {
+                        Note localNote = NoteDataStore.getByLocalId(noteLocalId);
+                        localNote.setIsDirty(false);
+                        localNote.save();
+                    }
+                });
+    }
+
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                filterUnchanged()
-                        .doOnNext(new Action1<Wrapper>() {
-                            @Override
-                            public void call(Wrapper wrapper) {
-                                saveAsDraft(wrapper);
-                                setResult(RESULT_OK);
-                                NetworkUtils.checkNetwork();
-                            }
-                        })
-                        .flatMap(new Func1<Wrapper, Observable<Long>>() {
-                            @Override
-                            public Observable<Long> call(Wrapper wrapper) {
-                                return uploadToServer(wrapper.note.getId());
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(new Action0() {
-                            @Override
-                            public void call() {
-                                DialogDisplayer.showProgress(NoteEditActivity.this, R.string.saving_note);
-                            }
-                        })
-                        .subscribe(new Observer<Long>() {
-                            @Override
-                            public void onCompleted() {
-                                DialogDisplayer.dismissProgress();
-                                finish();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                DialogDisplayer.dismissProgress();
-                                ToastUtils.show(Leamonax.getContext(), e.getMessage());
-                                if (e instanceof NetworkUtils.NetworkUnavailableException) {
-                                    finish();
-                                } else if (e instanceof ReadableException) {
-                                    setResult(RESULT_CONFLICT);
-                                    finish();
-                                }
-                            }
-
-                            @Override
-                            public void onNext(Long noteLocalId) {
-                                Note localNote = NoteDataStore.getByLocalId(noteLocalId);
-                                localNote.setIsDirty(false);
-                                localNote.save();
-                            }
-                        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(getString(R.string.alert_dialog_message_note));
+                builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveNoteInternal();
+                    }
+                });
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setCancelable(false).create().show();
                 return true;
             case R.id.action_settings:
                 mPager.setCurrentItem(FRAG_SETTINGS);
