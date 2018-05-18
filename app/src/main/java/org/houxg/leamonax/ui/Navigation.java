@@ -36,7 +36,6 @@ import org.houxg.leamonax.model.Tag;
 import org.houxg.leamonax.model.User;
 import org.houxg.leamonax.service.AccountService;
 import org.houxg.leamonax.service.NotebookService;
-import org.houxg.leamonax.utils.CollectionUtils;
 import org.houxg.leamonax.utils.DisplayUtils;
 import org.houxg.leamonax.utils.OpenUtils;
 import org.houxg.leamonax.utils.ToastUtils;
@@ -45,7 +44,6 @@ import org.houxg.leamonax.widget.TriangleView;
 import org.houxg.leamonax.widget.spinner.SpinnerArrayAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -464,9 +462,6 @@ public class Navigation {
         mAccountAdapter.load(AccountService.getAccountList());
         mTagAdapter.refresh();
         mNotebookAdapter.refresh();
-        if (mCurrentMode == NoteFragment.Mode.NOTEBOOK && TextUtils.isEmpty(mNotebookAdapter.getCurrentParentId())) {
-            mCurrentMode = NoteFragment.Mode.RECENT_NOTES;
-        }
         if (mCallback != null) {
             if (mCallback.onShowNotes(mCurrentMode)) {
                 close();
