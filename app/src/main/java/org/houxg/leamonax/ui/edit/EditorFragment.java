@@ -166,6 +166,10 @@ public class EditorFragment extends Fragment implements Editor.EditorListener {
         mEditor.setContent(content);
     }
 
+    public void setTitleAndContent(String title, String content) {
+        mEditor.setTitleAndContent(title, content);
+    }
+
     public String getTitle() {
         return mEditor.getTitle();
     }

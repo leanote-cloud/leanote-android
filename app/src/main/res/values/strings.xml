@@ -123,4 +123,5 @@
     <string name="allow">allow</string>
     <string name="lea_api_error_need_upgrade_account">need upgrade Leanote account</string>
     <string name="webview_select_picture">Select Picture</string>
+    <string name="note_not_load_completed">Notes are not loaded and cannot be saved</string>
 </resources>

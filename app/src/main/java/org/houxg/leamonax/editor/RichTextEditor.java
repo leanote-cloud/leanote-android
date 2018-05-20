@@ -29,6 +29,7 @@ public class RichTextEditor extends Editor implements TinnyMceCallback.TinnyMceL
         mWebView = view;
         mWebView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.addJavascriptInterface(new HostApp(), "hostApp");
         mWebView.setWebViewClient(new EditorClient());
         mWebView.setWebChromeClient(new EditorChromeClient());
         mWebView.addJavascriptInterface(new TinnyMceCallback(this), JS_CALLBACK_HANDLER);
@@ -79,6 +80,14 @@ public class RichTextEditor extends Editor implements TinnyMceCallback.TinnyMceL
             content = "";
         }
         return content;
+    }
+
+    @Override
+    public void setTitleAndContent(String title, String content) {
+        content = HtmlUtils.escapeHtml(content);
+        XLog.i(TAG + "escaped=" + content);
+        String script = String.format(Locale.US, "setTitleAndContent('%s', '%s');", title, content);
+        new JsRunner().get(mWebView, script);
     }
 
     @Override

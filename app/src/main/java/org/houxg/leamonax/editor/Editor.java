@@ -73,6 +73,8 @@ public abstract class Editor {
         return "";
     }
 
+    public abstract void setTitleAndContent(String title, String content);
+
     public interface EditorListener {
         void onPageLoaded();
         void onClickedLink(String title, String url);

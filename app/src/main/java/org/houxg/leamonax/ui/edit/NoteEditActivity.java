@@ -14,10 +14,14 @@ import android.view.ViewGroup;
 
 import com.elvishew.xlog.XLog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.houxg.leamonax.Leamonax;
 import org.houxg.leamonax.R;
 import org.houxg.leamonax.ReadableException;
 import org.houxg.leamonax.database.NoteDataStore;
+import org.houxg.leamonax.model.CompleteEvent;
 import org.houxg.leamonax.model.Note;
 import org.houxg.leamonax.model.Tag;
 import org.houxg.leamonax.service.NoteFileService;
@@ -58,6 +62,7 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
     private Wrapper mOriginal;
     private Wrapper mModified;
     private boolean mIsNewNote;
+    private boolean mIsMenuSaveEnabled = false;
 
     private LeaViewPager mPager;
 
@@ -81,6 +86,7 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
             finish();
             return;
         }
+        EventBus.getDefault().register(this);
         mIsNewNote = getIntent().getBooleanExtra(EXT_IS_NEW_NOTE, false);
         mOriginal = new Wrapper(NoteDataStore.getByLocalId(noteLocalId));
         mModified = new Wrapper(NoteDataStore.getByLocalId(noteLocalId));
@@ -114,12 +120,17 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         this.sendBroadcast(intent);
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
+                if (!mIsMenuSaveEnabled) {
+                    ToastUtils.show(this, R.string.note_not_load_completed);
+                    return true;
+                }
                 filterUnchanged()
                         .doOnNext(new Action1<Wrapper>() {
                             @Override
@@ -323,8 +334,12 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
 
     @Override
     public void onInitialized() {
-        mEditorFragment.setTitle(mModified.note.getTitle());
-        mEditorFragment.setContent(mModified.note.getContent());
+        mEditorFragment.setTitleAndContent(mModified.note.getTitle(), mModified.note.getContent());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CompleteEvent event) {
+        mIsMenuSaveEnabled = true;
     }
 
     @Override

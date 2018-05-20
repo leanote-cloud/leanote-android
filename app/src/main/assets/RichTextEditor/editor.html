@@ -242,6 +242,13 @@
     function isChildOfBody(elm) {
         return tinyMCE.editors[0].$.contains(tinyMCE.editors[0].getBody(), elm);
     }
+
+    function setTitleAndContent(title, content) {
+        setTitle(title);
+        tinyMCE.editors[0].setContent(content);
+        hostApp.loadCompleted();
+        return "";
+    }
 </script>
 
 </html>

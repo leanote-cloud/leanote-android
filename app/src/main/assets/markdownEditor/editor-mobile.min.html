@@ -10,5 +10,12 @@
         $('#title').attr('placeholderText', '标题')
         $('#wmd-input-sub').attr('placeholderText', '内容')
     }
+
+    function setTitleAndContent(title, content) {
+        document.getElementById('title').innerHTML = title;
+        ZSSEditor.getField('mdEditor').setHTML(content);
+        hostApp.loadCompleted();
+        return "";
+    }
 </script>
 </body></html>

@@ -25,6 +25,7 @@ public class MarkdownEditor extends Editor {
         mWebView = view;
         mWebView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.addJavascriptInterface(new HostApp(), "hostApp");
         mWebView.setWebViewClient(new Editor.EditorClient());
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadUrl("file:///android_asset/markdownEditor/editor-mobile.min.html?lang=" + Locale.getDefault().getLanguage());
@@ -69,6 +70,12 @@ public class MarkdownEditor extends Editor {
     public String getContent() {
         String content = HtmlUtils.unescapeHtml(new JsRunner().get(mWebView, "ZSSEditor.getField('mdEditor').getHTML();"));
         return content;
+    }
+
+    @Override
+    public void setTitleAndContent(String title, String content) {
+        String script = String.format(Locale.US, "setTitleAndContent('%s', '%s');", HtmlUtils.escapeHtml(title), HtmlUtils.escapeHtml(content));
+        new JsRunner().get(mWebView, script);
     }
 
     @Override
