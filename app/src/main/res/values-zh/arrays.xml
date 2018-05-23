@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="select_key">
+        <item>按创建时间-升序</item>
+        <item>按创建时间-降序</item>
+        <item>按更新时间-升序</item>
+        <item>按更新时间-降序</item>
+        <item>按标题-升序</item>
+        <item>按标题-降序</item>
+    </string-array>
+
+    <string-array name="select_value">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+</resources>

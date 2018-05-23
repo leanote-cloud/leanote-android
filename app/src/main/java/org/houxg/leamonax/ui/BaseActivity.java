@@ -13,6 +13,7 @@ import org.houxg.leamonax.R;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +27,13 @@ public class BaseActivity extends AppCompatActivity {
         initToolBar(toolbar, false);
     }
 
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
     protected void initToolBar(Toolbar toolbar, boolean hasBackArrow) {
         if (toolbar != null) {
+            mToolbar = toolbar;
             setSupportActionBar(toolbar);
             toolbar.setTitleTextColor(0xffFAFAFA);
             toolbar.setTitle(getTitle());

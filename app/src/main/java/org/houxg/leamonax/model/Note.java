@@ -342,7 +342,7 @@ public class Note extends BaseModel implements Serializable {
         return msg;
     }
 
-    public static class UpdateTimeComparetor implements Comparator<Note> {
+    public static class UpdateTimeDescComparetor implements Comparator<Note> {
         @Override
         public int compare(Note lhs, Note rhs) {
             long lTime = lhs.getUpdatedTimeVal();
@@ -356,4 +356,68 @@ public class Note extends BaseModel implements Serializable {
             }
         }
     }
+
+    public static class UpdateTimeAscComparetor implements Comparator<Note> {
+        @Override
+        public int compare(Note lhs, Note rhs) {
+            long lTime = lhs.getUpdatedTimeVal();
+            long rTime = rhs.getUpdatedTimeVal();
+            if (lTime > rTime) {
+                return 1;
+            } else if (lTime < rTime) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    public static class CreateTimeDescComparetor implements Comparator<Note> {
+        @Override
+        public int compare(Note lhs, Note rhs) {
+            long lTime = lhs.getCreatedTimeVal();
+            long rTime = rhs.getCreatedTimeVal();
+            if (lTime > rTime) {
+                return -1;
+            } else if (lTime < rTime) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    public static class CreateTimeAscComparetor implements Comparator<Note> {
+        @Override
+        public int compare(Note lhs, Note rhs) {
+            long lTime = lhs.getCreatedTimeVal();
+            long rTime = rhs.getCreatedTimeVal();
+            if (lTime > rTime) {
+                return 1;
+            } else if (lTime < rTime) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    public static class TitleDescComparetor implements Comparator<Note> {
+        @Override
+        public int compare(Note lhs, Note rhs) {
+            String lTitle = lhs.getTitle();
+            String rTitle = rhs.getTitle();
+            return lTitle.compareTo(rTitle);
+        }
+    }
+
+    public static class TitleAscComparetor implements Comparator<Note> {
+        @Override
+        public int compare(Note lhs, Note rhs) {
+            String lTitle = lhs.getTitle();
+            String rTitle = rhs.getTitle();
+            return rTitle.compareTo(lTitle);
+        }
+    }
+
 }
