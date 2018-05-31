@@ -163,7 +163,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
                 notes = NoteDataStore.getByTagText(mode.tagText, Account.getCurrent().getUserId());
                 break;
             case SEARCH:
-                notes = NoteDataStore.searchByTitle(mode.keywords);
+                notes = NoteDataStore.searchByFullTextSearch(mode.keywords);
                 mNoteList.setHighlight(mode.keywords);
                 break;
             default:

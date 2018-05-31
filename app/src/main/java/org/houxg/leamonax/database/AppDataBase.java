@@ -19,7 +19,7 @@ import org.houxg.leamonax.model.RelationshipOfNoteTag;
 import org.houxg.leamonax.model.Tag;
 import org.houxg.leamonax.model.Tag_Table;
 
-@Database(name = "leanote_db", version = 4)
+@Database(name = "leanote_db", version = 5)
 public class AppDataBase {
 
     @Migration(version = 2, database = AppDataBase.class)
@@ -155,6 +155,14 @@ public class AppDataBase {
                 }
             }
             cursor.close();
+        }
+    }
+
+    @Migration(version = 5, database = AppDataBase.class)
+    public static class UpdateNoteContentToFTS extends BaseMigration {
+        @Override
+        public void migrate(DatabaseWrapper database) {
+            database.execSQL("CREATE VIRTUAL TABLE fts_note USING fts4 (content='note', content)");
         }
     }
 }

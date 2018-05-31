@@ -1,10 +1,14 @@
 package org.houxg.leamonax.database;
 
 
+import android.database.Cursor;
+
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.property.IProperty;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.houxg.leamonax.model.Account;
 import org.houxg.leamonax.model.Note;
@@ -16,8 +20,10 @@ import org.houxg.leamonax.model.Tag;
 import org.houxg.leamonax.model.Tag_Table;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class NoteDataStore {
     public static List<Note> searchByTitle(String keyword) {
@@ -30,6 +36,31 @@ public class NoteDataStore {
                 .and(Note_Table.isDeleted.eq(false))
                 .queryList();
     }
+
+    public static List<Note> searchByFullTextSearch(String keyword) {
+        Set<Long> set = new LinkedHashSet<>();
+        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
+        String query = "select id from note where userid = ? and istrash = 0 and isdeleted = 0 and id in " +
+                "(select rowid from fts_note where fts_note match ?)";////查询Content中满足条件的记录
+        Cursor cursor = databaseWrapper.rawQuery(query, new String[]{Account.getCurrent().getUserId(), keyword});
+        while(cursor.moveToNext()) {
+            set.add(cursor.getLong(cursor.getColumnIndex("id")));
+        }
+        cursor.close();
+
+        query = "select id from note where userid = ? and istrash = 0 and isdeleted = 0 and title like ?";//查询title中满足条件的记录
+        cursor = databaseWrapper.rawQuery(query, new String[]{Account.getCurrent().getUserId(), "%" + keyword + "%"});//查询Content中满足条件的记录
+        while(cursor.moveToNext()) {
+            set.add(cursor.getLong(cursor.getColumnIndex("id")));
+        }
+        cursor.close();
+
+        return SQLite.select()
+                .from(Note.class)
+                .where(Note_Table.id.in(set))
+                .queryList();
+    }
+
 
     public static Note getByServerId(String serverId) {
         return SQLite.select()
