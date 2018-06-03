@@ -24,11 +24,13 @@ import org.houxg.leamonax.model.UpdateRe;
 import org.houxg.leamonax.network.ApiProvider;
 import org.houxg.leamonax.utils.CollectionUtils;
 import org.houxg.leamonax.utils.RetrofitUtils;
+import org.houxg.leamonax.utils.SharedPreferenceUtils;
 import org.houxg.leamonax.utils.StringUtils;
 import org.houxg.leamonax.utils.TimeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +40,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import rx.Observable;
 
 public class NoteService {
 
@@ -48,6 +49,8 @@ public class NoteService {
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private static final String CONFLICT_SUFFIX = "--conflict";
     private static final int MAX_ENTRY = 20;
+    public static final String SP_HAS_FTS_FULL_BUILD = "sp_has_fts_full_build";
+    public static final String SP_FTS_INCREASE_BUILD_KES = "sp_has_increase_build_KEYS";
 
     public static void pushToServer() {
         List<Note> notes = NoteDataStore.getAllDirtyNotes(Account.getCurrent().getUserId());
@@ -56,6 +59,31 @@ public class NoteService {
                 saveNote(note.getId());
             }
         }
+    }
+    public static void buildFTSNote() {
+        if (!SharedPreferenceUtils.read(SharedPreferenceUtils.CONFIG, SP_HAS_FTS_FULL_BUILD, false)) {
+            NoteDataStore.FTSNoteRebuild();
+            SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_HAS_FTS_FULL_BUILD, true);
+            SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_FTS_INCREASE_BUILD_KES, "");
+        } else {
+            String noteLocalIds = SharedPreferenceUtils.read(SharedPreferenceUtils.CONFIG, SP_FTS_INCREASE_BUILD_KES, "");
+            String array[] = TextUtils.split(noteLocalIds, ",");
+            for (String localIdStr: array) {
+                Long localId = Long.valueOf(localIdStr);
+                NoteDataStore.updateFTSNoteByLocalId(localId);
+            }
+            SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_FTS_INCREASE_BUILD_KES, "");
+        }
+    }
+
+    public static void addInCreaseBuildKey(Long localId) {
+        String noteLocalIds = SharedPreferenceUtils.read(SharedPreferenceUtils.CONFIG, SP_FTS_INCREASE_BUILD_KES, "");
+        String array[] = TextUtils.split(noteLocalIds, ",");
+        List<String> list = new ArrayList<>(Arrays.asList(array));
+        if (!list.contains(String.valueOf(localId))) {
+            list.add(String.valueOf(localId));
+        }
+        SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_FTS_INCREASE_BUILD_KES, TextUtils.join(",", list));
     }
 
     public static void fetchFromServer() {

@@ -169,6 +169,7 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
                             @Override
                             public void call(Wrapper wrapper) {
                                 saveAsDraft(wrapper);
+                                NoteService.addInCreaseBuildKey(wrapper.note.getId());
                                 setResult(RESULT_OK);
                                 NetworkUtils.checkNetwork();
                             }
@@ -240,6 +241,7 @@ public class NoteEditActivity extends BaseActivity implements EditorFragment.Edi
                                         wrapper.note.delete();
                                     } else {
                                         saveAsDraft(wrapper);
+                                        NoteService.addInCreaseBuildKey(wrapper.note.getId());
                                     }
                                 }
                             });

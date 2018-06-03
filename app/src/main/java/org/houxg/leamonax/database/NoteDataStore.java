@@ -37,6 +37,18 @@ public class NoteDataStore {
                 .queryList();
     }
 
+    public static void updateFTSNoteByLocalId(Long localId) {
+//        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
+//        String query = "INSERT INTO fts_note(fts_note) VALUES('rebuild')";//This can be slow
+//        databaseWrapper.execSQL(query);
+    }
+
+    public static void FTSNoteRebuild() {
+        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
+        String query = "INSERT INTO fts_note(fts_note) VALUES('rebuild')";//This can be slow
+        databaseWrapper.execSQL(query);
+    }
+
     public static List<Note> searchByFullTextSearch(String keyword) {
         Set<Long> set = new LinkedHashSet<>();
         DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
