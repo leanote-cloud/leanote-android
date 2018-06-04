@@ -122,4 +122,9 @@
     <string name="lea_api_error_need_upgrade_account">需要升级蚂蚁笔记账户</string>
     <string name="webview_select_picture">选择图片</string>
     <string name="note_not_load_completed">笔记未加载完，不能保存</string>
+    <string name="full_text_search">全文搜索</string>
+    <string name="full_text_search_index_rebuild">重建索引</string>
+    <string name="full_text_search_index_rebuild_success">索引构建成功</string>
+    <string name="full_text_search_rebuild_index_msg">这是一个很耗时的操作,你确定要重新构建索引么(默认情况下我们不推荐用户使用此功能)?</string>
+    <string name="progress_dialog_loading_msg">Processing&#8230;</string>
 </resources>

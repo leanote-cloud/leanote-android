@@ -38,17 +38,54 @@ public class NoteDataStore {
     }
 
     public static void updateFTSNoteByLocalId(Long localId) {
-//        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
-//        String query = "INSERT INTO fts_note(fts_note) VALUES('rebuild')";//This can be slow
-//        databaseWrapper.execSQL(query);
+        Note note = getByLocalId(localId);
+        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
+        String query = "UPDATE fts_note SET content = '" + note.getContent() + "' where rowid = " + localId;
+        databaseWrapper.execSQL(query);
+    }
+
+    public static boolean isExistsTableFTSNote() {
+        boolean result = false;
+        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
+        String query = "select count(*) as c from sqlite_master where type ='table' and name ='fts_note'";
+        Cursor cursor = databaseWrapper.rawQuery(query, null);
+        if(cursor.moveToNext()){
+            int count = cursor.getInt(0);
+            if(count > 0){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public static void createTableFTSNote() {
+        DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
+        String query = "CREATE VIRTUAL TABLE fts_note USING fts4 (content='note', content)";
+        databaseWrapper.execSQL(query);
     }
 
     public static void FTSNoteRebuild() {
+        if (!isExistsTableFTSNote()) {
+            createTableFTSNote();
+        }
+        FTSNoteRebuildInternal();
+    }
+
+    public static void FTSNoteRebuildInternal() {
         DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
         String query = "INSERT INTO fts_note(fts_note) VALUES('rebuild')";//This can be slow
         databaseWrapper.execSQL(query);
     }
 
+    public static List<Note> searchByKeyword(String keyword) {
+        if (!isExistsTableFTSNote()) {
+            createTableFTSNote();
+            return searchByTitle(keyword);
+        } else {
+            return searchByFullTextSearch(keyword);
+        }
+
+    }
     public static List<Note> searchByFullTextSearch(String keyword) {
         Set<Long> set = new LinkedHashSet<>();
         DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);

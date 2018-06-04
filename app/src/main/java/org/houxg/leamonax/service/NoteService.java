@@ -61,7 +61,7 @@ public class NoteService {
         }
     }
     public static void buildFTSNote() {
-        if (!SharedPreferenceUtils.read(SharedPreferenceUtils.CONFIG, SP_HAS_FTS_FULL_BUILD, false)) {
+        if (!SharedPreferenceUtils.read(SharedPreferenceUtils.CONFIG, SP_HAS_FTS_FULL_BUILD, false)) {//存在缺馅，对于多账户用户而言，每个账户第一次全量同步都会触发rebuild
             NoteDataStore.FTSNoteRebuild();
             SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_HAS_FTS_FULL_BUILD, true);
             SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_FTS_INCREASE_BUILD_KES, "");

@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.houxg.leamonax.Leamonax;
+import org.houxg.leamonax.model.Account;
 
 public class SharedPreferenceUtils {
 
-    public static final String CONFIG = "CONFIG";
+    public static final String CONFIG = "CONFIG_" + Account.getCurrent().getUserId();
 
     public static SharedPreferences getSharedPreferences(String name) {
         return Leamonax.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
