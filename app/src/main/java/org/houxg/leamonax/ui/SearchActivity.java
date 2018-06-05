@@ -33,15 +33,15 @@ public class SearchActivity extends BaseActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                NoteFragment.Mode mode = NoteFragment.Mode.SEARCH;
+                mode.setKeywords(query);
+                mNoteFragment.setMode(mode);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                NoteFragment.Mode mode = NoteFragment.Mode.SEARCH;
-                mode.setKeywords(newText);
-                mNoteFragment.setMode(mode);
-                return true;
+                return false;
             }
         });
 

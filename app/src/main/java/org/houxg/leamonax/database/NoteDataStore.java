@@ -91,7 +91,7 @@ public class NoteDataStore {
         DatabaseWrapper databaseWrapper = FlowManager.getWritableDatabase(AppDataBase.class);
         String query = "select id from note where userid = ? and istrash = 0 and isdeleted = 0 and id in " +
                 "(select rowid from fts_note where fts_note match ?)";////查询Content中满足条件的记录
-        Cursor cursor = databaseWrapper.rawQuery(query, new String[]{Account.getCurrent().getUserId(), keyword});
+        Cursor cursor = databaseWrapper.rawQuery(query, new String[]{Account.getCurrent().getUserId(), "*" + keyword + "*"});
         while(cursor.moveToNext()) {
             set.add(cursor.getLong(cursor.getColumnIndex("id")));
         }
