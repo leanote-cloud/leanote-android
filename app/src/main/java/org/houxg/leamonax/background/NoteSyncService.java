@@ -63,6 +63,7 @@ public class NoteSyncService extends Service {
                         if (!subscriber.isUnsubscribed()) {
                             NoteService.fetchFromServer();
                             NoteService.pushToServer();
+                            NoteService.buildFTSNote();
                             subscriber.onNext(null);
                             subscriber.onCompleted();
                         }

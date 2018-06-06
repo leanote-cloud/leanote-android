@@ -2,6 +2,7 @@ package org.houxg.leamonax.ui;
 
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,11 +23,10 @@ import org.houxg.leamonax.database.NoteTagDataStore;
 import org.houxg.leamonax.database.NotebookDataStore;
 import org.houxg.leamonax.model.Account;
 import org.houxg.leamonax.model.BaseResponse;
-import org.houxg.leamonax.model.Note;
-import org.houxg.leamonax.model.Notebook;
-import org.houxg.leamonax.model.RelationshipOfNoteTag;
 import org.houxg.leamonax.model.Tag;
 import org.houxg.leamonax.service.AccountService;
+import org.houxg.leamonax.service.NoteService;
+import org.houxg.leamonax.utils.SharedPreferenceUtils;
 import org.houxg.leamonax.utils.ToastUtils;
 
 import java.util.List;
@@ -40,6 +40,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import static org.houxg.leamonax.service.NoteService.SP_HAS_FTS_FULL_BUILD;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -59,6 +61,9 @@ public class SettingsActivity extends BaseActivity {
     TextView mHostTv;
     @BindView(R.id.ll_clear)
     View mClearDataView;
+    @BindView(R.id.ll_fts_rebuild)
+    View mFtsRebuildLayout;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,8 +151,8 @@ public class SettingsActivity extends BaseActivity {
     @OnClick(R.id.ll_change_password)
     void clickedPassword() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_change_passowrd, null);
-        final EditText mOldPasswordEt = (EditText) view.findViewById(R.id.et_old_password);
-        final EditText mNewPasswordEt = (EditText) view.findViewById(R.id.et_new_password);
+        final EditText mOldPasswordEt = view.findViewById(R.id.et_old_password);
+        final EditText mNewPasswordEt = view.findViewById(R.id.et_new_password);
         new AlertDialog.Builder(this)
                 .setTitle(R.string.change_password)
                 .setView(view)
@@ -178,6 +183,52 @@ public class SettingsActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         clearData();
+                    }
+                })
+                .show();
+    }
+
+    private void showProgressDialog() {
+        if (mDialog == null) {
+            mDialog = new ProgressDialog(this);
+            mDialog.setTitle(R.string.progress_dialog_loading_msg);
+            mDialog.setCancelable(false);
+            mDialog.show();
+        }
+    }
+
+    private void hideProgressDialog() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
+
+    @OnClick(R.id.ll_fts_rebuild)
+    void rebuildIndex() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.full_text_search_index_rebuild)
+                .setMessage(R.string.full_text_search_rebuild_index_msg)
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showProgressDialog();
+                        SharedPreferenceUtils.write(SharedPreferenceUtils.CONFIG, SP_HAS_FTS_FULL_BUILD, false);
+                        NoteService.buildFTSNote();
+                        dialog.dismiss();
+                        mFtsRebuildLayout.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                hideProgressDialog();
+                                ToastUtils.show(SettingsActivity.this, R.string.full_text_search_index_rebuild_success);
+                            }
+                        }, 1000 * 15);
                     }
                 })
                 .show();

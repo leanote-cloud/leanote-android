@@ -124,4 +124,9 @@
     <string name="lea_api_error_need_upgrade_account">need upgrade Leanote account</string>
     <string name="webview_select_picture">Select Picture</string>
     <string name="note_not_load_completed">Notes are not loaded and cannot be saved</string>
+    <string name="full_text_search">Full text search</string>
+    <string name="full_text_search_index_rebuild">rebuild fts index</string>
+    <string name="full_text_search_index_rebuild_success">Index build succeeded</string>
+    <string name="full_text_search_rebuild_index_msg">This is a time-consuming operation. Are you sure you want to rebuild the index(We don\'t recommend users to use this feature by default)?</string>
+    <string name="progress_dialog_loading_msg">Loading&#8230;</string>
 </resources>
