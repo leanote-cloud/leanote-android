@@ -46,8 +46,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static org.houxg.leamonax.R.menu.note;
-
 public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterListener, ActionModeHandler.Callback<Note> {
 
     private static final String EXT_SCROLL_POSITION = "ext_scroll_position";
@@ -84,7 +82,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(note, menu);
+        inflater.inflate(R.menu.note, menu);
     }
 
     @Override
@@ -125,16 +123,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mNoteList.setScrollPosition(savedInstanceState.getInt(EXT_SCROLL_POSITION, 0));
-        }
         mActionModeHandler = new ActionModeHandler<>(getActivity(), this, R.menu.delete);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(EXT_SCROLL_POSITION, mNoteList.getScrollPosition());
     }
 
     @Override

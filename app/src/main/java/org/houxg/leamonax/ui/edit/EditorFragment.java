@@ -142,7 +142,7 @@ public class EditorFragment extends Fragment implements Editor.EditorListener {
             mEditor = new RichTextEditor(this);
             formatRestId = R.layout.format_bar_richtext;
         }
-        ViewGroup formatBarContainer = (ViewGroup) view.findViewById(R.id.fl_container);
+        ViewGroup formatBarContainer = view.findViewById(R.id.fl_container);
         View formatBar = inflater.inflate(formatRestId, formatBarContainer, false);
         formatBarContainer.addView(formatBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         ButterKnife.bind(this, view);
@@ -262,10 +262,10 @@ public class EditorFragment extends Fragment implements Editor.EditorListener {
     private void showEditLInkPanel(View anchorView) {
         View contentView = LayoutInflater.from(anchorView.getContext()).inflate(R.layout.pop_link, null);
         contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        final EditText linkEt = (EditText) contentView.findViewById(R.id.et_link);
-        TextView multipleLinksTv = (TextView) contentView.findViewById(R.id.tv_multiple_links);
-        TextView confirmTv = (TextView) contentView.findViewById(R.id.tv_confirm);
-        TextView clearTv = (TextView) contentView.findViewById(R.id.tv_clear);
+        final EditText linkEt = contentView.findViewById(R.id.et_link);
+        TextView multipleLinksTv = contentView.findViewById(R.id.tv_multiple_links);
+        TextView confirmTv = contentView.findViewById(R.id.tv_confirm);
+        TextView clearTv = contentView.findViewById(R.id.tv_clear);
         final PopupWindow popupWindow = new PopupWindow(contentView);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);

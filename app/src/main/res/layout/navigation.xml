@@ -298,4 +298,31 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/iv_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_theme_night" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="48dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/theme_night"
+            android:textColor="@color/primary_text_light"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
 </LinearLayout>

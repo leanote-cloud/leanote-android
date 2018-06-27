@@ -38,6 +38,7 @@ import org.houxg.leamonax.service.AccountService;
 import org.houxg.leamonax.service.NotebookService;
 import org.houxg.leamonax.utils.DisplayUtils;
 import org.houxg.leamonax.utils.OpenUtils;
+import org.houxg.leamonax.utils.SharedPreferenceUtils;
 import org.houxg.leamonax.utils.ToastUtils;
 import org.houxg.leamonax.widget.AlphabetDrawable;
 import org.houxg.leamonax.widget.TriangleView;
@@ -55,11 +56,13 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import skin.support.SkinCompatManager;
 
 import static android.app.Activity.RESULT_OK;
 
 public class Navigation {
     public static final int REQ_ADD_ACCOUNT = 55;
+    public static final String SP_THEME_NIGHT = "night_theme";
     @BindView(R.id.drawer)
     DrawerLayout mDrawerLayout;
 
@@ -85,6 +88,9 @@ public class Navigation {
     RecyclerView mTagRv;
     @BindView(R.id.tr_tag)
     TriangleView mTagTr;
+
+    @BindView(R.id.iv_theme)
+    ImageView mThemeIv;
 
     Drawable mAccountRipple;
 
@@ -167,7 +173,7 @@ public class Navigation {
     }
 
     private void animateChangeAccount(View v, final Account account) {
-        ImageView itemAvatar = (ImageView) v.findViewById(R.id.iv_avatar);
+        ImageView itemAvatar = v.findViewById(R.id.iv_avatar);
         if (itemAvatar.getDrawable() == null) {
             CrashReport.postCatchedException(new IllegalStateException("account item's drawable is null"));
             changeAccount(account);
@@ -299,8 +305,8 @@ public class Navigation {
             @Override
             public void onClickedAddNotebook(final String parentNotebookId, List<Notebook> notebooks) {
                 View view = LayoutInflater.from(mActivity).inflate(R.layout.dialog_add_notebook, null);
-                final EditText mEdit = (EditText) view.findViewById(R.id.edit);
-                final MaterialBetterSpinner spinner = (MaterialBetterSpinner) view.findViewById(R.id.spinner);
+                final EditText mEdit = view.findViewById(R.id.edit);
+                final MaterialBetterSpinner spinner = view.findViewById(R.id.spinner);
                 final List<Notebook> tempNotebooks = new ArrayList<>();
                 tempNotebooks.clear();
                 tempNotebooks.addAll(notebooks);
@@ -340,7 +346,7 @@ public class Navigation {
             @Override
             public void onEditNotebook(final Notebook notebook) {
                 View view = LayoutInflater.from(mActivity).inflate(R.layout.dialog_sigle_edittext, null);
-                final EditText mEdit = (EditText) view.findViewById(R.id.edit);
+                final EditText mEdit = view.findViewById(R.id.edit);
                 mEdit.setText(notebook.getTitle());
                 mEdit.setSelection(notebook.getTitle().length());
                 new AlertDialog.Builder(mActivity)
@@ -536,6 +542,19 @@ public class Navigation {
     void clickedAbout() {
         if (mCallback != null) {
             mCallback.onClickAbout();
+        }
+    }
+
+    @OnClick(R.id.rl_theme)
+    void clickedTheme() {
+        boolean result = SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false);
+        SharedPreferenceUtils.write(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, !result);
+        if (!SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false)) {
+            mThemeIv.setImageResource(R.drawable.ic_theme_night);
+            SkinCompatManager.getInstance().restoreDefaultTheme();
+        } else {
+            mThemeIv.setImageResource(R.drawable.ic_theme_daily);
+            SkinCompatManager.getInstance().loadSkin("night", null, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN);
         }
     }
 

@@ -6,6 +6,7 @@ import android.webkit.WebView;
 
 import com.elvishew.xlog.XLog;
 
+import org.houxg.leamonax.BuildConfig;
 import org.houxg.leamonax.utils.HtmlUtils;
 
 import java.util.Locale;
@@ -29,6 +30,9 @@ public class RichTextEditor extends Editor implements TinnyMceCallback.TinnyMceL
         mWebView = view;
         mWebView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.getSettings().setJavaScriptEnabled(true);
+        if(BuildConfig.DEBUG) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
         mWebView.addJavascriptInterface(new HostApp(), "hostApp");
         mWebView.setWebViewClient(new EditorClient());
         mWebView.setWebChromeClient(new EditorChromeClient());

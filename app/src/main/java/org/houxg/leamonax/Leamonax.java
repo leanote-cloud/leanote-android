@@ -4,6 +4,7 @@ package org.houxg.leamonax;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -24,6 +25,10 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.greenrobot.eventbus.EventBus;
 import org.houxg.leamonax.ui.MainActivity;
+
+import skin.support.SkinCompatManager;
+import skin.support.app.SkinCardViewInflater;
+import skin.support.design.app.SkinMaterialViewInflater;
 
 public class Leamonax extends Application {
 
@@ -58,6 +63,13 @@ public class Leamonax extends Application {
                 Glide.with(context).load(path).into(imageView);
             }
         });
+
+        SkinCompatManager.withoutActivity(this)
+                .addInflater(new SkinMaterialViewInflater())    // material design
+                .addInflater(new SkinCardViewInflater())        // CardView v7
+                .setSkinStatusBarColorEnable(true)              // 关闭状态栏换肤
+                .loadSkin();
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     private void initBugly() {

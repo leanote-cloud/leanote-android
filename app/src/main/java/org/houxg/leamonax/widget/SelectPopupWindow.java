@@ -2,6 +2,7 @@ package org.houxg.leamonax.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,7 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SelectPopupWindow extends ListPopupWindow {
+import static org.houxg.leamonax.ui.Navigation.SP_THEME_NIGHT;
+
+public class SelectPopupWindow extends ListPopupWindow{
     public static final String SP_SORT_TYPE = "sp_sort_type";
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
@@ -51,6 +54,12 @@ public class SelectPopupWindow extends ListPopupWindow {
         setAnchorView(anchorView);
         setOverlapAnchor(true);
         setModal(true);
+        boolean result = SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false);
+        if (result) {
+            setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.white_night));
+        } else {
+            setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.white));
+        }
         setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

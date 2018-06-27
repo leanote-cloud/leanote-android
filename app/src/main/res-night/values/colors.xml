@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary_night">#3b3b3b</color>
+    <!--<color name="colorPrimaryDark">#616161</color>-->
+    <color name="colorAccent_night">#3b3b3b</color>
+    <color name="window_background_night">#373737</color>
+
+    <color name="toolbar_night">#3b3b3b</color>
+    <color name="menu_text_night">#373737</color>
+    <!--<color name="drawer_divider_night">#E0E0E0</color>-->
+    <!--<color name="drawer_divider_light_night">#BDBDBD</color>-->
+
+    <color name="drawer_divider_night">#2b2b2b</color>
+    <color name="drawer_divider_light_night">#E0E0E0</color>
+
+    <!--<color name="primary_text_light">#de000000</color>-->
+    <!--<color name="secondary_text_light">#8a000000</color>-->
+    <!--<color name="hint_text_light">#61000000</color>-->
+    <!--<color name="divider_light">#1f000000</color>-->
+    <color name="navigation_night">#3b3b3b</color>
+    <!--<color name="transparent">#00000000</color>-->
+    <color name="white_night">#373737</color>
+    <color name="white_alpha_night">#c7000000</color>
+
+    <!--<color name="black">#000</color>-->
+    <!--<color name="lightGray">#EEEEEE</color>-->
+</resources>

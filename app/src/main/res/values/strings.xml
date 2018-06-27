@@ -129,4 +129,5 @@
     <string name="full_text_search_index_rebuild_success">Index build succeeded</string>
     <string name="full_text_search_rebuild_index_msg">This is a time-consuming operation. Are you sure you want to rebuild the index(We don\'t recommend users to use this feature by default)?</string>
     <string name="progress_dialog_loading_msg">Loading&#8230;</string>
+    <string name="theme_night">Night Theme</string>
 </resources>

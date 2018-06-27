@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        android:background="@drawable/note_selector"
+        android:background="@drawable/note_selector_night"
         android:orientation="vertical">
 
         <LinearLayout

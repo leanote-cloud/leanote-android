@@ -25,7 +25,6 @@ public class NoteList {
     @BindView(R.id.recycler_view)
     RecyclerView mNoteListView;
     private NoteAdapter mAdapter;
-    private int mScrollPosition = 0;
     private int mCurrentType = TYPE_SIMPLE;
     private RecyclerView.ItemDecoration mItemDecoration;
 
@@ -36,22 +35,6 @@ public class NoteList {
         mNoteListView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new NoteAdapter(adapterListener);
         mNoteListView.setAdapter(mAdapter);
-        mNoteListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                mAdapter.setScrolling(newState != RecyclerView.SCROLL_STATE_IDLE);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                mScrollPosition = dy;
-            }
-        });
         mItemDecoration = new DividerDecoration(DisplayUtils.dp2px(8));
         setType(mCurrentType);
     }
@@ -111,16 +94,7 @@ public class NoteList {
         mAdapter.setSelected(note, isSelected);
     }
 
-    public int getScrollPosition() {
-        return mScrollPosition;
-    }
-
     public void invalidateAllSelected() {
         mAdapter.invalidateAllSelected();
-    }
-
-    public void setScrollPosition(int position) {
-        mScrollPosition = position;
-        mNoteListView.scrollTo(0, position);
     }
 }

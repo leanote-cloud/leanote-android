@@ -43,15 +43,12 @@ import butterknife.ButterKnife;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
 
-    public static final int TYPE_DETAIL_PLACEHOLDER = 233;
-
     private List<Note> mData;
     private Map<String, String> mNotebookId2TitleMaps;
     private NoteAdapterListener mListener;
     private Pattern mTitleHighlight;
     private int mCurrentType = NoteList.TYPE_SIMPLE;
     private List<Long> mSelectedNotes = new ArrayList<>();
-    private boolean isScrolling = false;
 
     public NoteAdapter(NoteAdapterListener listener) {
         mListener = listener;
@@ -69,10 +66,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         } else {
             mTitleHighlight = Pattern.compile(StringUtils.escapeRegex(titleKeyWord), Pattern.CASE_INSENSITIVE);
         }
-    }
-
-    public void setScrolling(boolean scrolling) {
-        isScrolling = scrolling;
     }
 
     public void setType(int type) {
@@ -101,8 +94,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
             layoutId = R.layout.item_note_simple;
         } else if (viewType == NoteList.TYPE_DETAIL) {
             layoutId = R.layout.item_note;
-        } else  if (viewType == TYPE_DETAIL_PLACEHOLDER) {
-            layoutId = R.layout.item_note_detail_placeholder;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
         return new NoteHolder(view);
@@ -118,11 +109,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (isScrolling && mCurrentType == NoteList.TYPE_DETAIL) {
-            return TYPE_DETAIL_PLACEHOLDER;
-        } else {
-            return mCurrentType;
-        }
+        return mCurrentType;
     }
 
     @Override
@@ -131,11 +118,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         int type = getItemViewType(position);
         switch (type) {
             case NoteList.TYPE_DETAIL:
-            case TYPE_DETAIL_PLACEHOLDER:
                 renderDetailMeta(holder, note);
-                if (type == NoteList.TYPE_DETAIL) {
-                    renderDetailContent(holder, note);
-                }
+                renderDetailContent(holder, note);
                 break;
             case NoteList.TYPE_SIMPLE:
                 renderSimple(holder, note);

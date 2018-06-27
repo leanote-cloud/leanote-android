@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import org.houxg.leamonax.BuildConfig;
 import org.houxg.leamonax.utils.HtmlUtils;
 
 import java.util.Locale;
@@ -25,6 +26,9 @@ public class MarkdownEditor extends Editor {
         mWebView = view;
         mWebView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.getSettings().setJavaScriptEnabled(true);
+        if(BuildConfig.DEBUG) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
         mWebView.addJavascriptInterface(new HostApp(), "hostApp");
         mWebView.setWebViewClient(new Editor.EditorClient());
         mWebView.setWebChromeClient(new WebChromeClient());
