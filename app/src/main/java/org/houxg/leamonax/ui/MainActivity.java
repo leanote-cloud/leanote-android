@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.elvishew.xlog.XLog;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -28,6 +28,8 @@ import org.houxg.leamonax.model.Notebook;
 import org.houxg.leamonax.model.SyncEvent;
 import org.houxg.leamonax.ui.edit.NoteEditActivity;
 import org.houxg.leamonax.utils.NetworkUtils;
+import org.houxg.leamonax.utils.StatusBarUtils;
+import org.houxg.leamonax.utils.StatusBarViewHacker;
 import org.houxg.leamonax.utils.ToastUtils;
 
 import java.util.Locale;
@@ -44,7 +46,9 @@ public class MainActivity extends BaseActivity implements Navigation.Callback {
     NoteFragment mNoteFragment;
 
     @BindView(R.id.drawer)
-    View mNavigationView;
+    DrawerLayout mNavigationView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     PullToRefresh mPullToRefresh;
     Navigation mNavigation;
@@ -60,7 +64,10 @@ public class MainActivity extends BaseActivity implements Navigation.Callback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initToolBar((Toolbar) findViewById(R.id.toolbar));
+        setStatusBarColor();
+        StatusBarUtils.setColorForDrawerLayout(this, mNavigationView, getResources().getColor(R.color.colorPrimary), StatusBarUtils.DEFAULT_STATUS_BAR_ALPHA);
+        StatusBarViewHacker.fixStatusBarBackgroundColor(this);
+        initToolBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white);
         CrashReport.setUserId(Account.getCurrent().getUserId());

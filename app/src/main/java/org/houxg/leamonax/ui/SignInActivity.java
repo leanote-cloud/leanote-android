@@ -88,6 +88,7 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
         setContentView(R.layout.activity_signin);
         setResult(RESULT_CANCELED);
         ButterKnife.bind(this);
+        setStatusBarColor();
         mEmailEt.addTextChangedListener(this);
         mPasswordEt.addTextChangedListener(this);
         mHostEt.setPivotY(0);

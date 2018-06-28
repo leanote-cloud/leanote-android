@@ -39,6 +39,8 @@ import org.houxg.leamonax.service.NotebookService;
 import org.houxg.leamonax.utils.DisplayUtils;
 import org.houxg.leamonax.utils.OpenUtils;
 import org.houxg.leamonax.utils.SharedPreferenceUtils;
+import org.houxg.leamonax.utils.StatusBarUtils;
+import org.houxg.leamonax.utils.StatusBarViewHacker;
 import org.houxg.leamonax.utils.ToastUtils;
 import org.houxg.leamonax.widget.AlphabetDrawable;
 import org.houxg.leamonax.widget.TriangleView;
@@ -91,6 +93,7 @@ public class Navigation {
 
     @BindView(R.id.iv_theme)
     ImageView mThemeIv;
+    DrawerLayout mView;
 
     Drawable mAccountRipple;
 
@@ -107,7 +110,8 @@ public class Navigation {
         mCallback = callback;
     }
 
-    public void init(Activity activity, View view) {
+    public void init(Activity activity, DrawerLayout view) {
+        mView = view;
         ButterKnife.bind(this, view);
         mActivity = activity;
         initAccountPanel();
@@ -546,15 +550,38 @@ public class Navigation {
     }
 
     @OnClick(R.id.rl_theme)
-    void clickedTheme() {
+    void clickedTheme(final View view) {
         boolean result = SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false);
         SharedPreferenceUtils.write(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, !result);
+
+        SkinCompatManager.SkinLoaderListener skinLoaderListener = new SkinCompatManager.SkinLoaderListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess() {
+                StatusBarUtils.setColorForDrawerLayout(mActivity, mView, mActivity.getResources().getColor(R.color.colorPrimary), StatusBarUtils.DEFAULT_STATUS_BAR_ALPHA);
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        StatusBarViewHacker.fixStatusBarBackgroundColor(mActivity);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailed(String errMsg) {
+
+            }
+        };
         if (!SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false)) {
             mThemeIv.setImageResource(R.drawable.ic_theme_night);
-            SkinCompatManager.getInstance().restoreDefaultTheme();
+            SkinCompatManager.getInstance().loadSkin("", skinLoaderListener, SkinCompatManager.SKIN_LOADER_STRATEGY_NONE);
         } else {
             mThemeIv.setImageResource(R.drawable.ic_theme_daily);
-            SkinCompatManager.getInstance().loadSkin("night", null, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN);
+            SkinCompatManager.getInstance().loadSkin("night", skinLoaderListener, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN);
         }
     }
 

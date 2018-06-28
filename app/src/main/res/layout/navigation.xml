@@ -8,6 +8,10 @@
     android:clickable="true"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/status_bar_height"/>
+
     <RelativeLayout
         android:id="@+id/rl_info"
         android:background="?android:attr/selectableItemBackground"

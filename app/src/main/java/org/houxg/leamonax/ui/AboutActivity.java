@@ -41,6 +41,7 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        setStatusBarColor();
         initToolBar((Toolbar) findViewById(R.id.toolbar), true);
         ButterKnife.bind(this);
 

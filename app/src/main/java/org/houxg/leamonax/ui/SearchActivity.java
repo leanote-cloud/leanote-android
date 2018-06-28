@@ -28,6 +28,7 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+        setStatusBarColor();
         initToolBar(mToolbar, true);
         setTitle("");
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
