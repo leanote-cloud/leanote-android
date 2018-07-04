@@ -28,6 +28,7 @@ import org.houxg.leamonax.utils.ActionModeHandler;
 import org.houxg.leamonax.utils.CollectionUtils;
 import org.houxg.leamonax.utils.NetworkUtils;
 import org.houxg.leamonax.utils.SharedPreferenceUtils;
+import org.houxg.leamonax.utils.SkinCompatUtils;
 import org.houxg.leamonax.utils.ToastUtils;
 import org.houxg.leamonax.widget.NoteList;
 import org.houxg.leamonax.widget.SelectPopupWindow;
@@ -82,7 +83,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.note, menu);
+        inflater.inflate(SkinCompatUtils.isThemeNight() ? R.menu.note_night : R.menu.note, menu);
     }
 
     @Override

@@ -8,6 +8,7 @@
     <color name="toolbar">#1d89b7</color>
     <color name="menu_text">#FAFAFA</color>
     <color name="drawer_divider">#BDBDBD</color>
+    <color name="drawer_divider2">#BDBDBD</color>
     <color name="drawer_divider_light">#E0E0E0</color>
 
     <color name="primary_text_light">#de000000</color>
@@ -20,4 +21,5 @@
     <color name="white_alpha">#00000000</color>
     <color name="black">#000</color>
     <color name="lightGray">#EEEEEE</color>
+    <color name="cardview_light_background">#FFFFFFFF</color>
 </resources>

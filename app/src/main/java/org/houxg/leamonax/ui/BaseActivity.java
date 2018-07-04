@@ -8,10 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.houxg.leamonax.R;
-import org.houxg.leamonax.utils.SharedPreferenceUtils;
+import org.houxg.leamonax.utils.SkinCompatUtils;
 import org.houxg.leamonax.utils.StatusBarUtils;
-
-import static org.houxg.leamonax.ui.Navigation.SP_THEME_NIGHT;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -29,13 +27,19 @@ public class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             mToolbar = toolbar;
             setSupportActionBar(toolbar);
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+            toolbar.setTitleTextColor(ContextCompat.getColor(this, SkinCompatUtils.isThemeNight() ? R.color.primary_text_light_night : R.color.black));
             toolbar.setTitle(getTitle());
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null && hasBackArrow) {
                 actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white);
+                actionBar.setHomeAsUpIndicator(SkinCompatUtils.isThemeNight() ? R.drawable.ic_arrow_back_white : R.drawable.ic_arrow_back_black);
             }
+        }
+    }
+
+    public void updateTitleTextColorByTheme() {
+        if (mToolbar != null) {
+            mToolbar.setTitleTextColor(ContextCompat.getColor(this, SkinCompatUtils.isThemeNight() ? R.color.primary_text_light_night : R.color.black));
         }
     }
 
@@ -53,8 +57,7 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected void setStatusBarColor() {
         int id;
-        boolean result = SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false);
-        if (result) {
+        if (SkinCompatUtils.isThemeNight()) {
             id = R.color.colorPrimary_night;
         } else {
             id = R.color.colorPrimary;

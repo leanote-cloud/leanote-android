@@ -16,12 +16,11 @@ import android.widget.TextView;
 import org.houxg.leamonax.R;
 import org.houxg.leamonax.utils.DisplayUtils;
 import org.houxg.leamonax.utils.SharedPreferenceUtils;
+import org.houxg.leamonax.utils.SkinCompatUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.houxg.leamonax.ui.Navigation.SP_THEME_NIGHT;
 
 public class SelectPopupWindow extends ListPopupWindow{
     public static final String SP_SORT_TYPE = "sp_sort_type";
@@ -54,8 +53,7 @@ public class SelectPopupWindow extends ListPopupWindow{
         setAnchorView(anchorView);
         setOverlapAnchor(true);
         setModal(true);
-        boolean result = SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false);
-        if (result) {
+        if (SkinCompatUtils.isThemeNight()) {
             setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.white_night));
         } else {
             setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.white));

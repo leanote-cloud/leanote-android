@@ -28,6 +28,7 @@ import org.houxg.leamonax.model.Notebook;
 import org.houxg.leamonax.model.SyncEvent;
 import org.houxg.leamonax.ui.edit.NoteEditActivity;
 import org.houxg.leamonax.utils.NetworkUtils;
+import org.houxg.leamonax.utils.SkinCompatUtils;
 import org.houxg.leamonax.utils.StatusBarUtils;
 import org.houxg.leamonax.utils.StatusBarViewHacker;
 import org.houxg.leamonax.utils.ToastUtils;
@@ -69,7 +70,7 @@ public class MainActivity extends BaseActivity implements Navigation.Callback {
         StatusBarViewHacker.fixStatusBarBackgroundColor(this);
         initToolBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_nav);
         CrashReport.setUserId(Account.getCurrent().getUserId());
 
         mNavigation = new Navigation(this);
@@ -111,7 +112,7 @@ public class MainActivity extends BaseActivity implements Navigation.Callback {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(SkinCompatUtils.isThemeNight() ? R.menu.main_night : R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

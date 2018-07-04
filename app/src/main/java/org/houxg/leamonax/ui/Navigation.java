@@ -39,6 +39,7 @@ import org.houxg.leamonax.service.NotebookService;
 import org.houxg.leamonax.utils.DisplayUtils;
 import org.houxg.leamonax.utils.OpenUtils;
 import org.houxg.leamonax.utils.SharedPreferenceUtils;
+import org.houxg.leamonax.utils.SkinCompatUtils;
 import org.houxg.leamonax.utils.StatusBarUtils;
 import org.houxg.leamonax.utils.StatusBarViewHacker;
 import org.houxg.leamonax.utils.ToastUtils;
@@ -551,7 +552,7 @@ public class Navigation {
 
     @OnClick(R.id.rl_theme)
     void clickedTheme(final View view) {
-        boolean result = SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false);
+        boolean result = SkinCompatUtils.isThemeNight();
         SharedPreferenceUtils.write(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, !result);
 
         SkinCompatManager.SkinLoaderListener skinLoaderListener = new SkinCompatManager.SkinLoaderListener() {
@@ -569,6 +570,10 @@ public class Navigation {
                         StatusBarViewHacker.fixStatusBarBackgroundColor(mActivity);
                     }
                 });
+                if (mActivity instanceof BaseActivity) {
+                    ((BaseActivity)mActivity).updateTitleTextColorByTheme();
+                }
+                mActivity.invalidateOptionsMenu();
             }
 
             @Override
@@ -576,9 +581,9 @@ public class Navigation {
 
             }
         };
-        if (!SharedPreferenceUtils.read(SharedPreferenceUtils.LEANOTE, SP_THEME_NIGHT, false)) {
+        if (!SkinCompatUtils.isThemeNight()) {
             mThemeIv.setImageResource(R.drawable.ic_theme_night);
-            SkinCompatManager.getInstance().loadSkin("", skinLoaderListener, SkinCompatManager.SKIN_LOADER_STRATEGY_NONE);
+            SkinCompatManager.getInstance().loadSkin("", skinLoaderListener, SkinCompatManager.SKIN_LOADER_STRATEGY_NONE);//reset
         } else {
             mThemeIv.setImageResource(R.drawable.ic_theme_daily);
             SkinCompatManager.getInstance().loadSkin("night", skinLoaderListener, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN);

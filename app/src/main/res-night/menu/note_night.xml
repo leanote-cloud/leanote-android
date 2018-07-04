@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_view_type"
-        android:icon="@drawable/ic_view_type_black"
+        android:icon="@drawable/ic_view_type_white"
         android:title="@string/view_type"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_view_more"
-        android:icon="@drawable/ic_more_vert_black"
+        android:icon="@drawable/ic_more_vert_white"
         app:showAsAction="always"
         android:title="" />
 </menu>
