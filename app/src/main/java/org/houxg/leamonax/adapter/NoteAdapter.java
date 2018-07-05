@@ -73,7 +73,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
     }
 
     public void setSelected(Note note, boolean isSelected) {
-        if (!isSelected ) {
+        if (!isSelected) {
             mSelectedNotes.remove(note.getId());
             notifyDataSetChanged();
         } else if (!mSelectedNotes.contains(note.getId())){

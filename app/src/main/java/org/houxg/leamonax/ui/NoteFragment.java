@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.houxg.leamonax.Leamonax;
 import org.houxg.leamonax.R;
 import org.houxg.leamonax.adapter.NoteAdapter;
@@ -24,8 +23,6 @@ import org.houxg.leamonax.database.NoteDataStore;
 import org.houxg.leamonax.model.Account;
 import org.houxg.leamonax.model.Note;
 import org.houxg.leamonax.service.NoteService;
-import org.houxg.leamonax.utils.ActionModeHandler;
-import org.houxg.leamonax.utils.CollectionUtils;
 import org.houxg.leamonax.utils.NetworkUtils;
 import org.houxg.leamonax.utils.SharedPreferenceUtils;
 import org.houxg.leamonax.utils.SkinCompatUtils;
@@ -47,7 +44,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterListener, ActionModeHandler.Callback<Note> {
+public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterListener {
 
     private static final String EXT_SCROLL_POSITION = "ext_scroll_position";
     private static final String SP_VIEW_TYPE = "sp_viewType";
@@ -56,7 +53,6 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
     RecyclerView mNoteListView;
 
     List<Note> mNotes;
-    ActionModeHandler<Note> mActionModeHandler;
     NoteList mNoteList;
     Mode mCurrentMode;
     OnSearchFinishListener mOnSearchFinishListener;
@@ -121,23 +117,6 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
         return view;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mActionModeHandler = new ActionModeHandler<>(getActivity(), this, R.menu.delete);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
     public void setMode(Mode mode) {
         mCurrentMode = mode;
         List<Note> notes;
@@ -194,22 +173,32 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
 
     @Override
     public void onClickNote(Note note) {
-        if (mActionModeHandler.isActionMode()) {
-            boolean isSelected = mActionModeHandler.chooseItem(note);
-            mNoteList.setSelected(note, isSelected);
-        } else {
-            startActivity(NotePreviewActivity.getOpenIntent(getActivity(), note.getId()));
-        }
+        startActivity(NotePreviewActivity.getOpenIntent(getActivity(), note.getId()));
     }
 
     @Override
     public void onLongClickNote(final Note note) {
-        boolean isSelected = mActionModeHandler.chooseItem(note);
-        mNoteList.setSelected(note, isSelected);
+        CommandDialogFragment dialogFragment = CommandDialogFragment.newInstance(note);
+        dialogFragment.setOnItemClickListener(new CommandDialogFragment.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        
+                        break;
+                    case 2:
+                        showAlertDialog(note);
+                        break;
+                }
+            }
+        });
+        dialogFragment.show(getChildFragmentManager(), CommandDialogFragment.TAG);
     }
 
-    private void deleteNote(List<Note> notes) {
-        Observable.from(notes)
+    private void deleteNote(Note note) {
+        Observable.just(note)
                 .flatMap(new Func1<Note, rx.Observable<Note>>() {
                     @Override
                     public rx.Observable<Note> call(final Note note) {
@@ -225,12 +214,11 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
                         });
                     }
                 })
-                .buffer(notes.size())
-                .flatMap(new Func1<List<Note>, Observable<Note>>() {
+                .flatMap(new Func1<Note, Observable<Note>>() {
                     @Override
-                    public Observable<Note> call(List<Note> notes) {
+                    public Observable<Note> call(Note note) {
                         NetworkUtils.checkNetwork();
-                        return Observable.from(notes);
+                        return Observable.just(note);
                     }
                 })
                 .flatMap(new Func1<Note, Observable<Note>>() {
@@ -277,16 +265,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
         setMode(mCurrentMode);
     }
 
-    @Override
-    public boolean onAction(int actionId, List<Note> pendingItems) {
-        if (CollectionUtils.isEmpty(pendingItems)) {
-            ToastUtils.show(getActivity(), R.string.no_note_was_selected);
-            return false;
-        }
-        final List<Note> waitToDelete = new ArrayList<>();
-        for (int i = 0; i < pendingItems.size(); i++) {
-            waitToDelete.add(pendingItems.get(i));
-        }
+    private void showAlertDialog(final Note note) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.delete_note)
                 .setMessage(R.string.are_you_sure_to_delete_note)
@@ -295,9 +274,7 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        mActionModeHandler.getPendingItems().clear();
-                        mActionModeHandler.dismiss();
-                        deleteNote(waitToDelete);
+                        deleteNote(note);
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -307,14 +284,6 @@ public class NoteFragment extends Fragment implements NoteAdapter.NoteAdapterLis
                     }
                 })
                 .show();
-        return true;
-    }
-
-    @Override
-    public void onDestroy(List<Note> pendingItems) {
-        if (CollectionUtils.isNotEmpty(pendingItems)) {
-            mNoteList.invalidateAllSelected();
-        }
     }
 
     public enum Mode {
