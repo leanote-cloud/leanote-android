@@ -270,6 +270,16 @@ public class NoteService {
             note.setContent(modifiedNote.getContent());
             handleFile(modifiedNote.getId(), note.getNoteFiles());
             updateTagsToLocal(modifiedNote.getId(), note.getTagData());
+            if (!modifiedNote.isLocalNote()) {//noteId已经存在，代表是更新操作,服务端updateNote接口存在bug,所以特殊处理下createdTime, publicTime
+                if (modifiedNote.getCreatedTimeVal() == -62135596800000L || modifiedNote.getPublicTimeVal() == -62135596800000L) {
+                    Note remoteNote = RetrofitUtils.excuteWithException(ApiProvider.getInstance().getNoteApi().getNoteAndContent(modifiedNote.getNoteId()));
+                    note.setCreatedTimeVal(remoteNote.getCreatedTimeVal());
+                    note.setPublicTimeVal(remoteNote.getPublicTimeVal());
+                } else {
+                    note.setCreatedTimeVal(modifiedNote.getCreatedTimeVal());
+                    note.setPublicTimeVal(modifiedNote.getPublicTimeVal());
+                }
+            }
             note.save();
             updateNoteUsnIfNeed(note.getUsn());
         } else {
