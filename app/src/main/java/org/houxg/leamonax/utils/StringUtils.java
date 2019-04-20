@@ -58,7 +58,7 @@ public class StringUtils {
     //转义正则表达式中的几个特殊符号
     public static String escapeRegex(String str) {
         int length = str.length();
-        StringBuilder sbf = new StringBuilder();
+        StringBuilder sbf = new StringBuilder(str);
         for (int i = 0; i < length; i++) {
             char c = str.charAt(i);
             if (c == '*') {
