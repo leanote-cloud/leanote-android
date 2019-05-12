@@ -48,7 +48,7 @@ public class ApiProvider {
     }
 
     public void init(String host) {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
                 .addNetworkInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {

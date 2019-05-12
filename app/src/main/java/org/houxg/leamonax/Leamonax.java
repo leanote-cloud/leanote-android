@@ -1,13 +1,15 @@
 package org.houxg.leamonax;
 
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.didichuxing.doraemonkit.DoraemonKit;
+import com.didichuxing.doraemonkit.kit.webdoor.WebDoorManager;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
 import com.facebook.stetho.Stetho;
@@ -25,7 +27,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.greenrobot.eventbus.EventBus;
 import org.houxg.leamonax.ui.MainActivity;
 
-public class Leamonax extends Application {
+public class Leamonax extends MultiDexApplication {
 
     private static Context mContext;
 
@@ -56,6 +58,16 @@ public class Leamonax extends Application {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
                 Glide.with(context).load(path).into(imageView);
+            }
+        });
+
+        DoraemonKit.install(this);
+
+        // H5任意门功能需要，非必须
+        DoraemonKit.setWebDoorCallback(new WebDoorManager.WebDoorCallback() {
+            @Override
+            public void overrideUrlLoading(Context context, String s) {
+                // 使用自己的H5容器打开这个链接
             }
         });
     }
